@@ -45,3 +45,30 @@ where you created `acrodefs.tex` as
 ```
 grep -v "{acronym}" acronyms.tex | sed 's/acro{/acrodef{/' > acrodefs.tex
 ``` 
+
+## Alternative Alternative
+
+If you are interested in trying out the [acro package](https://ctan.org/pkg/acro) but don't want to re-type the acronym list in the new syntax, you can use the following to convert to the simplest representation of the acronym definition:
+
+```
+grep acrodef acronyms.tex | sed  's/acrodef{\(.*\)}{\(.*\)}/DeclareAcronym{\U\1\E}{short = \U\1\E, long = \2}/' > acroacronyms.tex
+```
+
+Note that this puts the acronym IDs in uppercase, but there are additional options in the package to ignore case on the IDs if you like.
+
+Then you can use this file as:
+
+```
+\usepackage{acro}
+\input{acroacronyms.tex}
+```
+
+And if you want to include a list of acronyms, you can use:
+
+```
+\printacronyms
+```
+
+which comes with lots of options.
+
+IMPORTANT: The acro package doesn't like duplicate entries, so you will have to clean the duplicates out of this list before it will compile correctly.
